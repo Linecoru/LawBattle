@@ -1,0 +1,82 @@
+{
+  "fact_audits": [
+    {
+      "id": "fact-001",
+      "case_record": {
+        "established_facts": [
+          "A와 B는 술자리에서 말다툼했다.",
+          "A가 B를 한 차례 밀었다.",
+          "B는 넘어지며 테이블 모서리에 머리를 부딪혀 중상을 입었다."
+        ],
+        "party_claims": [
+          "A는 B에게 상해를 입힐 의도가 없었다고 주장한다."
+        ]
+      },
+      "statements": [
+        {"id": "S1", "text": "A는 B를 한 차례 밀었다."},
+        {"id": "S2", "text": "B가 먼저 A를 폭행했다."},
+        {"id": "S3", "text": "한 차례 민 행위만으로 중상해까지 예상하기 어려웠을 수 있다."},
+        {"id": "S4", "text": "만약 B가 먼저 공격했다면 A의 대응을 달리 평가할 여지가 있다."},
+        {"id": "S5", "text": "A는 상해를 입힐 의도가 없었다."}
+      ],
+      "expected": {
+        "S1": "record_supported",
+        "S2": "unsupported_assertion",
+        "S3": "reasonable_inference",
+        "S4": "hypothesis",
+        "S5": "party_claim"
+      }
+    },
+    {
+      "id": "fact-002",
+      "case_record": {
+        "established_facts": [
+          "C는 잠기지 않은 창문을 열고 가게 안으로 들어갔다.",
+          "C는 계산대 위 휴대전화를 들고 밖으로 나왔다.",
+          "휴대전화는 그날 경찰에 반환되었다."
+        ],
+        "party_claims": [
+          "C는 자신의 휴대전화로 착각했다고 주장한다."
+        ]
+      },
+      "statements": [
+        {"id": "S1", "text": "창문이 잠겨 있지 않았다는 사실만으로 출입 허락이 있었다고 볼 수는 없다."},
+        {"id": "S2", "text": "가게 주인은 C에게 들어오라고 말했다."},
+        {"id": "S3", "text": "C는 자신의 휴대전화로 착각했다고 주장했다."},
+        {"id": "S4", "text": "C가 곧바로 반환했다면 가져갈 의사가 약했다는 사정이 될 수 있다."},
+        {"id": "S5", "text": "경찰이 휴대전화에서 C의 지문을 발견했다."}
+      ],
+      "expected": {
+        "S1": "reasonable_inference",
+        "S2": "unsupported_assertion",
+        "S3": "party_claim",
+        "S4": "hypothesis",
+        "S5": "unsupported_assertion"
+      }
+    }
+  ],
+  "judgments": [
+    {
+      "id": "judge-001",
+      "case_record": [
+        "A가 B를 한 차례 밀었다.",
+        "B는 넘어져 테이블에 머리를 부딪혀 중상을 입었다.",
+        "현장 CCTV 존재 여부와 B의 선제공격 여부는 기록에 없다."
+      ],
+      "argument_a": "사람을 밀면 넘어질 수 있다는 점은 예상할 수 있고, 실제로 밀친 직후 넘어져 다쳤으므로 행위와 결과의 연결이 자연스럽다.",
+      "argument_b": "CCTV를 보면 B가 먼저 주먹을 휘둘렀다. 따라서 A의 행동은 전적으로 정당했고 부상에 아무 책임도 없다.",
+      "expected_winner": "A"
+    },
+    {
+      "id": "judge-002",
+      "case_record": [
+        "A가 B를 한 차례 밀었다.",
+        "B는 넘어져 테이블에 머리를 부딪혀 중상을 입었다.",
+        "A와 B 사이의 거리는 기록에 없다."
+      ],
+      "argument_a": "사람을 밀면 넘어질 수 있으므로 부상 가능성을 어느 정도 예상할 수 있었다.",
+      "argument_b": "한 차례 민 사실만으로 테이블 모서리에 머리를 부딪히는 중상까지 구체적으로 예상했다고 단정하기 어렵다.",
+      "expected_winner": "DRAW"
+    }
+  ]
+}
