@@ -27,3 +27,9 @@ npm test
 국가법령정보 API 클라이언트는 순차 요청, 최소 1초 간격, 15초 timeout, 원문 캐시, 서버 오류 재시도를 구현합니다. 401·403·429에서는 즉시 중단합니다. 이는 자체 보수적 제한이며 제공자가 보장한 호출 한도가 아닙니다. `LAW_OC` 환경변수를 지정한 뒤 `node scripts/law_sample.mjs list`, `precedent 일련번호`, `statute 법령ID`로 개별 샘플을 저장할 수 있습니다. 인증값은 출력하지 않습니다. 대량 수집은 자동 실행하지 않습니다.
 
 남은 작업: 실제 인증값으로 API 응답 검증, 원문 청킹·정규화, 임베딩 생성 및 대규모 벡터 DB, Qwen 모델 어댑터. 현재 작업물은 플레이 가능한 로컬 버전이며 실제 RAG 분석은 아직 수행하지 않습니다.
+
+## RAG 학습 자료
+
+실제 법률자료와 분리된 가상 실습 문서와 검색 정답표는 [`data/tutorial`](./data/tutorial/README.md)에 있습니다. Python 모듈, BGE-M3, Qdrant, reranker와 첫 구현 과제는 [`docs/RAG_파이썬_학습_가이드.md`](./docs/RAG_파이썬_학습_가이드.md)에 정리했습니다.
+
+바로 실행할 수 있는 단계별 코드는 [`rag_practice`](./rag_practice/README.md)에 있습니다.

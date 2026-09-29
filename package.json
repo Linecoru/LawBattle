@@ -1,1 +1,1 @@
-{"name":"little-court","version":"0.1.0","private":true,"type":"module","scripts":{"start":"node server.mjs","test":"node --test"},"engines":{"node":">=20"}}
+{"name":"little-court","version":"0.1.0","private":true,"type":"module","scripts":{"start":"node server.mjs","test":"node --test","check:tutorial":"node scripts/check_tutorial_data.mjs"},"engines":{"node":">=20"}}
