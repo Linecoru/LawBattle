@@ -28,9 +28,10 @@ def main() -> None:
         )
 
     path = save_rankings("hybrid", hybrid)
+    first_query_id = next(iter(hybrid))
     print_metrics("Hybrid RRF", hybrid)
     print(f"검색 결과 저장: {path}")
-    print(f"q001 상위 결과: {hybrid['q001'][:5]}")
+    print(f"{first_query_id} 상위 결과: {hybrid[first_query_id][:5]}")
 
 
 if __name__ == "__main__":

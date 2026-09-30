@@ -34,9 +34,10 @@ def search_all(top_k: int = 10) -> dict[str, list[str]]:
 def main() -> None:
     rankings = search_all()
     path = save_rankings("bm25", rankings)
+    first_query_id = next(iter(rankings))
     print_metrics("BM25", rankings)
     print(f"검색 결과 저장: {path}")
-    print(f"q001 상위 결과: {rankings['q001'][:5]}")
+    print(f"{first_query_id} 상위 결과: {rankings[first_query_id][:5]}")
 
 
 if __name__ == "__main__":

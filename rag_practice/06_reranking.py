@@ -53,9 +53,10 @@ def main() -> None:
         ]
 
     path = save_rankings("reranked", reranked)
+    first_query_id = next(iter(reranked))
     print_metrics("Reranker", reranked)
     print(f"검색 결과 저장: {path}")
-    print(f"q001 상위 결과: {reranked['q001'][:5]}")
+    print(f"{first_query_id} 상위 결과: {reranked[first_query_id][:5]}")
 
 
 if __name__ == "__main__":

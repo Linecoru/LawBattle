@@ -2,7 +2,13 @@
 
 from collections import Counter
 
-from common import DOCUMENTS_PATH, QUERIES_PATH, load_documents, load_queries
+from common import (
+    DATASET_NAME,
+    DOCUMENTS_PATH,
+    QUERIES_PATH,
+    load_documents,
+    load_queries,
+)
 
 
 def main() -> None:
@@ -10,6 +16,7 @@ def main() -> None:
     queries = load_queries()
     type_counts = Counter(document["document_type"] for document in documents)
 
+    print(f"데이터셋: {DATASET_NAME}")
     print(f"문서 파일: {DOCUMENTS_PATH}")
     print(f"질의 파일: {QUERIES_PATH}")
     print(f"문서 {len(documents)}건: {dict(type_counts)}")

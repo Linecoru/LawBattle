@@ -33,3 +33,5 @@ npm test
 실제 법률자료와 분리된 가상 실습 문서와 검색 정답표는 [`data/tutorial`](./data/tutorial/README.md)에 있습니다. Python 모듈, BGE-M3, Qdrant, reranker와 첫 구현 과제는 [`docs/RAG_파이썬_학습_가이드.md`](./docs/RAG_파이썬_학습_가이드.md)에 정리했습니다.
 
 바로 실행할 수 있는 단계별 코드는 [`rag_practice`](./rag_practice/README.md)에 있습니다.
+
+국가법령정보센터 Open API에서 수집한 실제 법령·판례 8건은 [`data/real_sample`](./data/real_sample/README.md)에 있습니다. 원본 API 응답을 실습 형식으로 정규화한 소규모 자료입니다.

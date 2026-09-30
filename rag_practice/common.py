@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -10,11 +11,21 @@ from typing import Any, Iterable
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DATA_DIR = PROJECT_ROOT / "data" / "tutorial"
-ARTIFACT_DIR = PROJECT_ROOT / "artifacts" / "rag_practice"
+DATASET_NAME = os.getenv("RAG_DATASET", "real_sample")
+if DATASET_NAME not in {"tutorial", "real_sample"}:
+    raise ValueError("RAG_DATASET은 tutorial 또는 real_sample이어야 합니다.")
+DATA_DIR = PROJECT_ROOT / "data" / DATASET_NAME
+ARTIFACT_DIR = PROJECT_ROOT / "artifacts" / "rag_practice" / DATASET_NAME
 DOCUMENTS_PATH = DATA_DIR / "raw_documents.jsonl"
 QUERIES_PATH = DATA_DIR / "gold_queries.jsonl"
-CHUNKS_PATH = ARTIFACT_DIR / "chunks.jsonl"
+CHUNKING_METHOD = os.getenv("RAG_CHUNKING", "section")
+if CHUNKING_METHOD not in {"section", "semantic"}:
+    raise ValueError("RAG_CHUNKING은 section 또는 semantic이어야 합니다.")
+SECTION_CHUNKS_PATH = ARTIFACT_DIR / "chunks.jsonl"
+SEMANTIC_CHUNKS_PATH = ARTIFACT_DIR / "semantic_chunks.jsonl"
+CHUNKS_PATH = (
+    SEMANTIC_CHUNKS_PATH if CHUNKING_METHOD == "semantic" else SECTION_CHUNKS_PATH
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -99,13 +110,14 @@ def chunk_documents(documents: Iterable[dict[str, Any]]) -> list[Chunk]:
 
 
 def save_chunks(chunks: Iterable[Chunk]) -> None:
-    write_jsonl(CHUNKS_PATH, (asdict(chunk) for chunk in chunks))
+    write_jsonl(SECTION_CHUNKS_PATH, (asdict(chunk) for chunk in chunks))
 
 
 def load_chunks() -> list[Chunk]:
     if not CHUNKS_PATH.exists():
         raise FileNotFoundError(
-            f"{CHUNKS_PATH}가 없습니다. 먼저 02_chunking.py를 실행하세요."
+            f"{CHUNKS_PATH}가 없습니다. section은 02_chunking.py, "
+            "semantic은 02b_semantic_chunking.py를 먼저 실행하세요."
         )
     return [Chunk(**row) for row in iter_jsonl(CHUNKS_PATH)]
 
@@ -117,7 +129,8 @@ def tokenize(text: str) -> list[str]:
 
 
 def save_rankings(name: str, rankings: dict[str, list[str]]) -> Path:
-    path = ARTIFACT_DIR / f"{name}_results.json"
+    suffix = "" if CHUNKING_METHOD == "section" else f"_{CHUNKING_METHOD}"
+    path = ARTIFACT_DIR / f"{name}{suffix}_results.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
         json.dumps(rankings, ensure_ascii=False, indent=2), encoding="utf-8"
@@ -126,7 +139,8 @@ def save_rankings(name: str, rankings: dict[str, list[str]]) -> Path:
 
 
 def load_rankings(name: str) -> dict[str, list[str]]:
-    path = ARTIFACT_DIR / f"{name}_results.json"
+    suffix = "" if CHUNKING_METHOD == "section" else f"_{CHUNKING_METHOD}"
+    path = ARTIFACT_DIR / f"{name}{suffix}_results.json"
     if not path.exists():
         raise FileNotFoundError(f"{path}가 없습니다. 앞 단계부터 실행하세요.")
     return json.loads(path.read_text(encoding="utf-8"))

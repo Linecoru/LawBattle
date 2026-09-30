@@ -7,6 +7,7 @@ from FlagEmbedding import BGEM3FlagModel
 
 from common import (
     ARTIFACT_DIR,
+    CHUNKING_METHOD,
     load_chunks,
     load_queries,
     print_metrics,
@@ -61,15 +62,21 @@ def main() -> None:
         )
 
     ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
+    vector_name = (
+        "dense_vectors.npz"
+        if CHUNKING_METHOD == "section"
+        else f"dense_vectors_{CHUNKING_METHOD}.npz"
+    )
     np.savez_compressed(
-        ARTIFACT_DIR / "dense_vectors.npz",
+        ARTIFACT_DIR / vector_name,
         document_vectors=document_vectors,
         query_vectors=query_vectors,
     )
     path = save_rankings("dense", rankings)
+    first_query_id = next(iter(rankings))
     print_metrics("Dense", rankings)
     print(f"검색 결과 저장: {path}")
-    print(f"q001 상위 결과: {rankings['q001'][:5]}")
+    print(f"{first_query_id} 상위 결과: {rankings[first_query_id][:5]}")
 
 
 if __name__ == "__main__":
